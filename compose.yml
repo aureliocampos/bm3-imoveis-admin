@@ -1,0 +1,37 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: bm3_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: bm3imoveis
+      MYSQL_USER: bm3imoveis
+      MYSQL_PASSWORD: bm3imoveis
+
+      SERVICE_NAME: bm3_mysql
+      SERVICE_TAGS: mysql
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - bm3_network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: bm3_phpmyadmin
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - '8080:80'
+    depends_on:
+      - db
+    networks:
+      - bm3_network
+
+volumes:
+  mysql_data:
+
+networks:
+  bm3_network:
